@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+import { cn } from "../lib/utils"
 type Props = {
   src: string;
   className?: string;
@@ -7,7 +7,7 @@ type Props = {
 export default function WeatherIcon({ src, className }: Props) {
   return (
     <img
-      className={twMerge("size-8", className ?? "")}
+      className={cn("size-8", className ?? "")}
       src={`https://openweathermap.org/img/wn/${src}.png`}
       alt="Weather Icon"
     />
