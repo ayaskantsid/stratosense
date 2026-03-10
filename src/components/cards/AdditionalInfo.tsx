@@ -8,11 +8,16 @@ import Uv from "/src/assets/uv.svg?react";
 import Wind from "/src/assets/wind.svg?react";
 import Pressure from "/src/assets/pressure.svg?react";
 import UpArrow from "/src/assets/uparrow.svg?react";
+import type { coords } from "../../types";
 
-export default function AdditionalInfo() {
+type Props = {
+  coords: coords;
+};
+
+export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ["weather"],
-    queryFn: () => getWeather({ lat: 28.67, lon: 77.46 }),
+    queryKey: ["weather", coords],
+    queryFn: () => getWeather({lat: coords.lat, lon: coords.lon}),
   });
   return (
     <Card title="Additional Info" childrenClassName="flex flex-col gap-8">

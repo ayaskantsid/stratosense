@@ -2,11 +2,16 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWeather } from "../../api";
 import Card from "./Card";
 import WeatherIcon from "../WeatherIcon";
+import type { coords } from "../../types";
 
-export default function CurrentWeather() {
+type Props = {
+  coords: coords;
+};
+
+export default function CurrentWeather({ coords }: Props) {
   const { data } = useSuspenseQuery({
-    queryKey: ["weather"],
-    queryFn: () => getWeather({ lat: 28.67, lon: 77.46 }),
+    queryKey: ["weather", coords],
+    queryFn: () => getWeather({lat: coords.lat, lon: coords.lon}),
   });
   return (
     <Card
