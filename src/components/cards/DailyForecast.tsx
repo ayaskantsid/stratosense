@@ -3,9 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWeather } from "../../api";
 import WeatherIcon from "../WeatherIcon";
 
-type Props = {};
-
-export default function DailyForecast({}: Props) {
+export default function DailyForecast() {
   const { data } = useSuspenseQuery({
     queryKey: ["weather"],
     queryFn: () => getWeather({ lat: 28.67, lon: 77.46 }),
