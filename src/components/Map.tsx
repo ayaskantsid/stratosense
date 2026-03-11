@@ -4,7 +4,7 @@ import type { coords } from "../types";
 import { useEffect } from "react";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 const API_KEY = import.meta.env.VITE_API_KEY;
-const MAPTILER_API_KEY = import.meta.env.MAPTILER_API_KEY;
+const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
 
 type Props = {
   coords: coords;
