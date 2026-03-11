@@ -5,16 +5,35 @@ import type { coords } from "@/types";
 import Card from "./cards/Card";
 import { Slider } from "./ui/slider";
 import clsx from "clsx";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../components/ui/tooltip";
+import Information from "/src/assets/information.svg?react";
+import { ChevronLeft } from "lucide-react";
 
 type Props = {
   coords: coords;
+  isSidePanelOpen: boolean;
+  setIsSidePanelOpen: (isSidePanelOpen: boolean) => void;
 };
 
-export default function SidePanel({ coords }: Props) {
+export default function SidePanel(props: Props) {
+  const { isSidePanelOpen, setIsSidePanelOpen } = props;
   return (
-    <div className="fixed top-0 right-0 h-screen w-96 shadow-md bg-sidebar z-1001 py-8 px-4">
+    <div
+      className={clsx(
+        "fixed top-0 right-0 h-screen w-96 shadow-md bg-sidebar z-1001 py-4 px-4 overflow-y-scroll transition-transform duration-300",
+        isSidePanelOpen ? "translate-x-0" : "translate-x-full",
+      )}
+    >
+      <button onClick={() => setIsSidePanelOpen(false)}>
+        <ChevronLeft className="size-8 -ml-2" />
+      </button>
       <Suspense fallback={<div>Loading...</div>}>
-        <AirPollution coords={coords} />
+        <AirPollution {...props} />
       </Suspense>
     </div>
   );
@@ -29,44 +48,76 @@ function AirPollution({ coords }: Props) {
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold">Air Pollution</h1>
       <h1 className="text-5xl font-semibold">{data?.list[0].main.aqi}</h1>
-      <h1 className="text-2xl font-semibold">AQI</h1>
+      <div className="flex items-center gap-2">
+        <h1 className="text-2xl font-semibold">AQI</h1>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Information className="size-4 invert" />
+            </TooltipTrigger>
+            <TooltipContent className="z-2000">
+              <p className="max-w-xs">
+                Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 =
+                Good, 2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
       {Object.entries(data?.list[0].components).map(([key, value]) => {
         const pollutant =
           airQualityRanges[key.toUpperCase() as keyof typeof airQualityRanges];
         const max = Math.max(pollutant["Very Poor"]?.min, value);
         const currentLevel = (() => {
-            for (const [level, range] of Object.entries(pollutant)) {
-                if (value >= range.min && ( range.max === null || value <= range.max)) {
-                    return level;
-                }
+          for (const [level, range] of Object.entries(pollutant)) {
+            if (
+              value >= range.min &&
+              (range.max === null || value <= range.max)
+            ) {
+              return level;
             }
-            return "Very Poor";
+          }
+          return "Very Poor";
         })();
 
         const qualityColor = (() => {
-            switch(currentLevel) {
-                case "Good":
-                    return "bg-green-500 text-black";
-                case "Fair":
-                    return "bg-yellow-500 text-black";
-                case "Moderate":
-                    return "bg-orange-500 text-black";
-                case "Poor":
-                    return "bg-red-500 text-white";
-                case "Very Poor":
-                    return "bg-purple-500 text-white";
-                default:
-                    return "bg-zinc-500 text-black";
-            }
+          switch (currentLevel) {
+            case "Good":
+              return "bg-green-500 text-black";
+            case "Fair":
+              return "bg-yellow-500 text-black";
+            case "Moderate":
+              return "bg-orange-500 text-black";
+            case "Poor":
+              return "bg-red-500 text-white";
+            case "Very Poor":
+              return "bg-purple-500 text-white";
+            default:
+              return "bg-zinc-500 text-black";
+          }
         })();
         return (
           <Card
             key={key}
             childrenClassName="flex flex-col gap-3"
-            className="hover:scale-105 transition-transform duration-300 from-sidebar-accent to-sidebar-accent/60"
+            className="hover:scale-102 transition-transform duration-300 from-sidebar-accent to-sidebar-accent/60"
           >
             <div className="flex justify-between">
-              <span className="text-lg font-bold capitalize">{key}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold capitalize">{key}</span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Information className="size-4 invert" />
+                    </TooltipTrigger>
+                    <TooltipContent className="z-2000">
+                      <p className="max-w-xs">
+                        {pollutantNameMapping[key.toUpperCase() as Pollutant]}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
               <span className="text-lg font-semibold">{value} μg/m³</span>
             </div>
             <Slider min={0} max={max} value={[value]} step={1} disabled />
@@ -77,12 +128,11 @@ function AirPollution({ coords }: Props) {
             <div className="flex justify-between text-xs text-gray-300">
               {Object.keys(pollutant).map((quality) => (
                 <span
-                  key={quality}
                   className={clsx(
                     "px-2 py-1 rounded-md text-xs font-medium",
                     quality === currentLevel
                       ? qualityColor
-                      : "bg-muted text-muted-foreground"
+                      : "bg-muted text-muted-foreground",
                   )}
                 >
                   {quality}
@@ -166,13 +216,13 @@ const airQualityRanges: AirQualityRanges = {
   },
 };
 
-// const pollutantNameMapping: Record<Pollutant, string> = {
-//   SO2: "Sulfur dioxide",
-//   NO2: "Nitrogen dioxide",
-//   PM10: "Particulate matter 10",
-//   PM2_5: "Fine particles matter",
-//   O3: "Ozone",
-//   CO: "Carbon monoxide",
-//   NO: "Nitrogen monoxide",
-//   NH3: "Ammonia",
-// };
+const pollutantNameMapping: Record<Pollutant, string> = {
+  SO2: "Sulfur dioxide",
+  NO2: "Nitrogen dioxide",
+  PM10: "Particulate matter 10",
+  PM2_5: "Fine particles matter",
+  O3: "Ozone",
+  CO: "Carbon monoxide",
+  NO: "Nitrogen monoxide",
+  NH3: "Ammonia",
+};
