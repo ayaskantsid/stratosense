@@ -19,7 +19,7 @@ export default function DailyForecast({ coords }: Props) {
       {data && data?.daily.length > 0 ? (
         data?.daily.map((day) => (
           <div key={day.dt} className="flex justify-between">
-            <p className="w-0">
+            <p className="w-8">
               {new Date(day.dt * 1000).toLocaleDateString(undefined, {
                 weekday: "short",
               })}
