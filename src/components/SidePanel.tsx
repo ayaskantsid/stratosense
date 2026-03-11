@@ -13,6 +13,7 @@ import {
 } from "../components/ui/tooltip";
 import Information from "/src/assets/information.svg?react";
 import { ChevronLeft } from "lucide-react";
+import SidePanelSkeleton from "./skeletons/SidePanelSkeleton";
 
 type Props = {
   coords: coords;
@@ -32,7 +33,7 @@ export default function SidePanel(props: Props) {
       <button onClick={() => setIsSidePanelOpen(false)}>
         <ChevronLeft className="size-8 -ml-2" />
       </button>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SidePanelSkeleton />}>
         <AirPollution {...props} />
       </Suspense>
     </div>
