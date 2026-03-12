@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import type { coords } from "../types";
 import { useEffect } from "react";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
+import { useTheme } from "./ThemeProvider";
 const API_KEY = import.meta.env.VITE_API_KEY;
 const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
 
@@ -49,10 +50,12 @@ function MapClick({
 
 function MapTileLayer() {
   const map = useMap();
+  const { theme } = useTheme();
+  const style = theme === "dark" ? "basic-dark" : "basic-v2-light";
 
   useEffect(() => {
     const tileLayer = new MaptilerLayer({
-      style: "basic-dark",
+      style,
       apiKey: MAPTILER_API_KEY,
     });
     tileLayer.addTo(map);
@@ -60,7 +63,7 @@ function MapTileLayer() {
     return () => {
       map.removeLayer(tileLayer);
     };
-  }, [map]);
+  }, [map, style]);
 
   return null;
 }

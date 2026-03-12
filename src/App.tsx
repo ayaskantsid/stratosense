@@ -17,6 +17,7 @@ import DailySkeleton from "./components/skeletons/DailySkeleton";
 import SidePanel from "./components/SidePanel";
 import Hamburger from "/src/assets/hamburger.svg?react";
 import MobileHeader from "./components/MobileHeader";
+import LightDarkToggle from "./components/LightDarkToggle";
 
 function App() {
   const [coordinates, setCoordinates] = useState<coords>({
@@ -45,21 +46,29 @@ function App() {
   return (
     <>
       <MobileHeader setIsSidePanelOpen={setIsSidePanelOpen} />
-      <div className="flex flex-col gap-8 p-8 pt-0 xs:pt-8 w-full lg:w-[calc(100dvw-var(--sidebar-width))] 2xl:h-screen 2xl:min-h-[1120px]">
-        <div className="flex flex-col gap-4 xs:flex-row xs:gap-8">
+      <div className="flex flex-col gap-8 p-8 pt-0 xs:pt-8 w-full lg:w-[calc(100dvw-var(--sidebar-width))] 2xl:h-screen 2xl:min-h-[1020px]">
+        <div className="flex flex-col gap-4 xs:flex-row xs:gap-5">
           <div className="flex flex-col md:flex-row gap-2 md:gap-4">
-            <h1 className="text-2xl font-semibold">Location: </h1>
+            <h1 className="text-xl font-semibold">Location: </h1>
             <LocationDropdown location={location} setLocation={setLocation} />
           </div>
           <div className="flex flex-col md:flex-row gap-2 md:gap-4">
-            <h1 className="text-2xl font-semibold whitespace-nowrap">
-              Map Type:
+            <h1 className="text-xl font-semibold whitespace-nowrap">
+              Layer:
             </h1>
             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
           </div>
-          <button onClick={() => setIsSidePanelOpen(true)} className="hidden xs:block">
-            <Hamburger className="size-6 invert ml-auto lg:hidden" />
-          </button>
+          <div className="ml-auto flex gap-6 items-center">
+            <div className="hidden xs:block">
+              <LightDarkToggle />
+            </div>
+            <button
+              onClick={() => setIsSidePanelOpen(true)}
+              className="hidden xs:block"
+            >
+              <Hamburger className="size-6 lg:hidden" />
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 2xl:flex-1 2xl:min-h-0 md:grid-cols-2 2xl:grid-cols-4 2xl:grid-rows-4 gap-4">
@@ -88,7 +97,6 @@ function App() {
             </Suspense>
           </div>
         </div>
-
       </div>
       <SidePanel
         coords={coords}

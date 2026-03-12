@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "../components/ui/tooltip";
 import Information from "/src/assets/information.svg?react";
-import { ChevronLeft } from "lucide-react";
+import Chevron from "/src/assets/ChevronLeft.svg?react"
 import SidePanelSkeleton from "./skeletons/SidePanelSkeleton";
 
 type Props = {
@@ -31,7 +31,7 @@ export default function SidePanel(props: Props) {
       )}
     >
       <button onClick={() => setIsSidePanelOpen(false)}>
-        <ChevronLeft className="size-8 -ml-2 lg:hidden" />
+        <Chevron className="size-8 -ml-2 lg:hidden" />
       </button>
       <Suspense fallback={<SidePanelSkeleton />}>
         <AirPollution {...props} />
@@ -54,7 +54,7 @@ function AirPollution({ coords }: Props) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Information className="size-4 invert" />
+              <Information className="size-4" />
             </TooltipTrigger>
             <TooltipContent className="z-2000">
               <p className="max-w-xs">
@@ -109,7 +109,7 @@ function AirPollution({ coords }: Props) {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Information className="size-4 invert" />
+                      <Information className="size-4" />
                     </TooltipTrigger>
                     <TooltipContent className="z-2000">
                       <p className="max-w-xs">
@@ -122,7 +122,7 @@ function AirPollution({ coords }: Props) {
               <span className="text-lg font-semibold">{value} μg/m³</span>
             </div>
             <Slider min={0} max={max} value={[value]} step={1} disabled />
-            <div className="flex justify-between text-xs text-gray-300">
+            <div className="flex justify-between text-xs">
               <p>0</p>
               <p>{max}</p>
             </div>
