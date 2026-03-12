@@ -101,7 +101,7 @@ function AirPollution({ coords }: Props) {
           <Card
             key={key}
             childrenClassName="flex flex-col gap-3"
-            className="hover:scale-102 transition-transform duration-300 from-sidebar-accent to-sidebar-accent/60"
+            className="hover:scale-105 transition-transform duration-300 from-sidebar-accent to-sidebar-accent/60"
           >
             <div className="flex justify-between">
               <div className="flex items-center gap-2">
