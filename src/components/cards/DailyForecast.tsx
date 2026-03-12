@@ -11,11 +11,11 @@ type Props = {
 export default function DailyForecast({ coords }: Props) {
   const { data } = useSuspenseQuery({
     queryKey: ["weather", coords],
-    queryFn: () => getWeather({lat: coords.lat, lon: coords.lon}),
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
 
   return (
-    <Card title="Daily Forecast" childrenClassName="flex flex-col gap-4">
+    <Card title="Daily Forecast" childrenClassName="flex flex-col gap-4 2xl:justify-between">
       {data && data?.daily.length > 0 ? (
         data?.daily.map((day) => (
           <div key={day.dt} className="flex justify-between">
@@ -25,7 +25,7 @@ export default function DailyForecast({ coords }: Props) {
               })}
             </p>
             <WeatherIcon src={day.weather[0].icon} />
-            <p>{day.temp.day}℃</p>
+            <p>{Math.round(day.temp.day)}℃</p>
             <p className="text-gray-500">{Math.round(day.temp.min)}℃</p>
             <p className="text-gray-500">{Math.round(day.temp.max)}℃</p>
           </div>

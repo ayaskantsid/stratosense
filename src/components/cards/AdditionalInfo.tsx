@@ -17,10 +17,13 @@ type Props = {
 export default function AdditionalInfo({ coords }: Props) {
   const { data } = useSuspenseQuery({
     queryKey: ["weather", coords],
-    queryFn: () => getWeather({lat: coords.lat, lon: coords.lon}),
+    queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
   return (
-    <Card title="Additional Info" childrenClassName="flex flex-col gap-8">
+    <Card
+      title="Additional Info"
+      childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-8"
+    >
       {rows.map(({ label, value, Icon }) => (
         <div key={value} className="flex justify-between">
           <div className="flex gap-4">
@@ -44,8 +47,13 @@ function FormatComponent({ value, number }: { value: string; number: number }) {
       hour12: true,
     });
   }
-  if(value === "wind_deg") {
-    return <UpArrow className="size-6 invert" style={{transform: `rotate(${number}deg)`}} />
+  if (value === "wind_deg") {
+    return (
+      <UpArrow
+        className="size-6 invert"
+        style={{ transform: `rotate(${number}deg)` }}
+      />
+    );
   }
   return number;
 }

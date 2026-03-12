@@ -20,15 +20,14 @@ export default function HourlyForecase({ coords }: Props) {
     >
       {data && data?.hourly.length > 0 ? (
         data?.hourly.map((hour) => (
-          <div className="flex flex-col gap-2 items-center p-2" key={hour.dt}>
+          <div className="flex flex-col 2xl:justify-between gap-2 items-center p-2 pb-4" key={hour.dt}>
             <p className="whitespace-nowrap">{new Date(hour.dt * 1000).toLocaleTimeString(undefined, {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}</p>
-            <WeatherIcon src={hour.weather[0].icon} />
+            <WeatherIcon className="2xl:size-11" src={hour.weather[0].icon} />
             <p>{Math.round(hour.temp)}℃</p>
-            <p className="text-gray-500">{Math.round(hour.feels_like)}℃</p>
           </div>
         ))
       ) : (

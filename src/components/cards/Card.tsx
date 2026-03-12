@@ -17,12 +17,12 @@ export default function Card({
   return (
     <div
       className={clsx(
-        "p-4 rounded-xl bg-linear-to-br from-card to-card/60 shadow-md flex flex-col gap-4",
+        "p-4 rounded-xl bg-linear-to-br from-card to-card/60 shadow-md flex flex-col gap-4 2xl:h-full",
         className,
       )}
     >
       {title && <h2 className="text-2xl font-semibold">{title}</h2>}
-      <div className={clsx(childrenClassName, "fade-in")}>{children}</div>
+      <div className={clsx(childrenClassName, "fade-in 2xl:flex-1")}>{children}</div>
     </div>
   );
 }
