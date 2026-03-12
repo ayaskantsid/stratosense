@@ -24,7 +24,7 @@ function App() {
     lon: 77.46,
   });
   const [location, setLocation] = useState<string>("Tokyo");
-  const [mapType, setMapType] = useState<string>("clouds_new");
+  const [mapType, setMapType] = useState<string>("default");
   const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
 
   const { data: geocodeData } = useQuery({

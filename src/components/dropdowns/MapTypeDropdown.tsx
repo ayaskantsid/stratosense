@@ -18,7 +18,7 @@ export default function MapTypeDropdown({ mapType, setMapType }: Props) {
       <SelectTrigger className="w-full xs:w-[180px]">
         <SelectValue placeholder="Map Type" />
       </SelectTrigger>
-      <SelectContent className="z-1001">
+      <SelectContent className="max-h-none overflow-visible z-1001">
         {types.map((type) => (
           <SelectItem value={type} key={type} className="capitalize">
             {type.split("_")[0]}
@@ -30,6 +30,7 @@ export default function MapTypeDropdown({ mapType, setMapType }: Props) {
 }
 
 const types = [
+  "default",
   "clouds_new",
   "precipitation_new",
   "pressure_new",
